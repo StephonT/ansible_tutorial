@@ -2,14 +2,19 @@
 
 - hosts: all
   become: true
+  #pre_tasks: <<< This allows for tasks to be ran first before other tasks that may be defined in this playbook
 
   tasks:
 
 
   - name: Install Apache Web Server Package
+    #tags: always         << adding tags will let ansible know to always run this play. You can also use it to target certain servers.
+    #To see the tags on the CLI: ansible-playbook --list-tags [yaml file]
+    #To run the playbook using the tag: ansible-playbook --tags [tag name] [yaml file] 
     yum:
       name: httpd
       state: present
+      update_cache: true
 
   
   - name: Enable and start httpd service

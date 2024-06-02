@@ -1,0 +1,38 @@
+---
+
+- hosts: db_servers
+  become: true
+  
+  tasks:
+
+
+
+  - name: Create DHCP Network Connection
+    nmcli:
+      conn_name: "dhcp"
+      ifname: "enp0s3"
+      type: "ethernet"
+      state: present
+
+
+  - name: Bring up the DHCP Connection
+    shell: "nmcli con up dhcp"
+
+
+
+  - name: Configure SSH to permit root login
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "^#?PermitRootLogin"   #This uses regex. The regex is saying the line starts with PermitRootLogin
+      line: "PermitRootLogin yes"
+      state: present  #Whether the line should be there or not
+      backup: yes  #This backs up the config file in case you completely butcher it.
+
+
+  - name: Restart SSHD Service to Apply Changes
+    systemd:
+      name: sshd
+      state: restarted
+      enabled: true
+
+...
