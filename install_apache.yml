@@ -32,6 +32,15 @@
       immediate: true
       state: enabled
         #when: ansible_hostname == "dbserver1-treadtech"
+  
+
+  - name: Copy default html file for site
+    copy:
+      src: default_site.html # In ansible, the file directory is assumed already. All you have to do is put the file name and Ansible will know where to get it from.
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
 
 
 ...
