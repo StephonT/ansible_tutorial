@@ -42,5 +42,41 @@
       group: root
       mode: 0644
 
+  - name: Install unzip 
+    package:
+      name: unzip
+
+  
+  - name: Install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.8.5/terraform_1.8.5_darwin_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0755
+      owner: root
+      group: root
+
+  
+
+  - name: Start httpd service
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+
+  - name: change e-mail address for admin
+    lineinfile: # This ansible module adds a line in a file
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin' # This is a regex expression that identifies the line that starts with a certain word
+      line: ServerAdmin somebody@somewhere.net # This is the line you would add to the file 
+    register: httpd # Register captures this state in a variable. So when this play is ran, it'll notice Ansible of the change. If you are going to change multiple lines, you have to use a different variable name. It's going to make a change and will only register the most recent change if you use the same name. Create a whole new play and use a different name for the register variable.
+
+
+  - name: Restart httpd
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed # This is monitoring the register variable above. So when it notices a change, this play will be ran.
 
 ...
