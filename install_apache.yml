@@ -8,9 +8,9 @@
 
 
   - name: Install Apache Web Server Package
-    #tags: always         << adding tags will let ansible know to always run this play. You can also use it to target certain servers.
+    #tags: always         << adding tags will let ansible know to always run this play. You can also use it to target certain servers. With that being said, you can use whatever tag name you want.
     #To see the tags on the CLI: ansible-playbook --list-tags [yaml file]
-    #To run the playbook using the tag: ansible-playbook --tags [tag name] [yaml file] 
+    #To run the playbook using the tag: ansible-playbook --tags [tag name] --ask-become-pass [yaml file] 
     yum:
       name: httpd
       state: present
@@ -25,11 +25,13 @@
 
 
   - name: Add http service to firewall
+    #tags: db
     firewalld:
       service: http
       permanent: true
       immediate: true
       state: enabled
+        #when: ansible_hostname == "dbserver1-treadtech"
 
 
 ...
