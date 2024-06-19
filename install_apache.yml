@@ -79,4 +79,32 @@
       state: restarted
     when: httpd.changed # This is monitoring the register variable above. So when it notices a change, this play will be ran.
 
+
+- hosts: nodes
+  become: true
+  tasks:
+
+  - name: create walter white user
+    tags: always 
+    user:
+      name: wwhite
+      comment: Walter White
+      shell: /bin/bash
+      
+  
+  # This play will be adding an authorized key for that user. We want ansible to login as an administrator using wwhite without a password or passphrase
+  - name: add ssh key for wwhite
+    authorized_key:
+      user: wwhite
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7P4stCyNnSsVRnvZMHI6OGdkiQhH839OlmK63tduw2rkdPguLNqE9Yumw7i3wZyS8NFCej2DJWh2W/uyfZn9g1na+DY8rR+4Ks6w1Rtd/tucQvVpNXWwd5rY7RS0tPEByvYG0C3KJrIwB4DyTIgxIily+L8o6nYaKO8q/KjVqJuFLtXR8HwFWD1ev04ERjFWK/rQ0D/PLK1TRRPL0RrCDrK+HxUPgzFp9seP+5e7MurM6mp0lX797d4ajgV/HLeC6KOKAO9WqOIRHKveZ7lv0Vha2hBigD9UlBrdra46Wn2Ckh2RC5k4sdpqqhotUEkmA/OJDOlV5vzvCpml8CkZOh2Pb03ZRYSZOoXgRS+/F/QkvKrfbpy66wmU2SBjZdne/o6s5NnDHovcgsZUPT8QvvuXYss/+qxCPZo2bTmNZH28kCFw7wNbJvbewm+1LUKfKzuMIpuVATTzsMPLzvvQDyUXJDphfWmnl57kfucXh6UuCUYXZjR5E774rDX8Dkzs= streadwell@ansible-treadtech"
+
+  - name: add sudoers file for wwhite
+    tags: always
+    copy:
+      src: sudoer_wwhite #this file was created in the files directory and will be copied to /etc/sudoers.d. Putting a file in that directory allows you to control a users sudo powers. It also keeps the visudo file clean!
+      dest: /etc/sudoers.d/wwhite
+      owner: root
+      group: root
+      mode: 0440
+       
 ...
