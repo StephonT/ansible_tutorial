@@ -4,5 +4,5 @@ node[1:3]
 [db_servers]
 dbserver[1:2]
 
-[rhel_clients]
+[clients]
 client1
