@@ -1,0 +1,4 @@
+- name: add ssh key for wwhite
+  authorized_key:
+    user: wwhite
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMnK6DORMhOwmCAwOROLSXpFYw8Ad7aoV8IXl0COnjC0 ansible"

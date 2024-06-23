@@ -1,0 +1,36 @@
+- name: Install Apache Web Server Package
+  yum:
+    name: httpd
+    state: present
+    update_cache: true
+
+
+- name: Enable and start httpd service
+  systemd:
+    name: httpd
+    enabled: true
+    state: started
+
+
+- name: Add http service to firewall
+  firewalld:
+    service: http
+    permanent: true
+    immediate: true
+    state: enabled
+
+
+- name: Copy default html file for site
+  copy:
+    src: default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: start httpd service
+  service:
+    name: httpd
+    state: started
+    enabled: yes
