@@ -70,14 +70,15 @@
       path: /etc/httpd/conf/httpd.conf
       regexp: '^ServerAdmin' # This is a regex expression that identifies the line that starts with a certain word
       line: ServerAdmin somebody@somewhere.net # This is the line you would add to the file 
-    register: httpd # Register captures this state in a variable. So when this play is ran, it'll notice Ansible of the change. If you are going to change multiple lines, you have to use a different variable name. It's going to make a change and will only register the most recent change if you use the same name. Create a whole new play and use a different name for the register variable.
+     #register: httpd # Register captures this state in a variable. So when this play is ran, it'll notice Ansible of the change. If you are going to change multiple lines, you have to use a different variable name. It's going to make a change and will only register the most recent change if you use the same name. Create a whole new play and use a different name for the register variable.
+      notify: restart_httpd
 
-
-  - name: Restart httpd
-    service:
-      name: httpd
-      state: restarted
-    when: httpd.changed # This is monitoring the register variable above. So when it notices a change, this play will be ran.
+ #- name: Restart httpd
+ #   service:
+ #     name: httpd
+ #     state: restarted
+ #   when: httpd.changed # This is monitoring the register variable above. So when it notices a change, this play will be ran.
+    # handlers can be created to better handle something when a certain play is triggered. For example, when the above play is triggered, the handler will be notified and this play will be ran. With that being said, you can copy this play into the handlers directory and delete register in the above play and put the following: notify: handler-name
 
 
 - hosts: all
