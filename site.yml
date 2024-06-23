@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+  become: true
+    # roles are defined inside of the roles directory. It is used to provide a structured was to organize tasks, templates, files, and variables
+  roles:
+    - base
+      # This play is going to find the base role and activate it.
+
+
+- hosts: nodes
+  become: true
+  roles:
+    - nodes
+  
+- hosts: db_servers
+  become: true
+  roles:
+    - db_servers 
+
+
+- hosts: clients
+  become: true
+  roles:
+    - clients
+...
