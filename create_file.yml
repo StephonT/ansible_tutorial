@@ -1,0 +1,24 @@
+---
+
+
+- hosts: nodes
+  become: true
+  tasks:
+
+    - name: Create file on remote node machines
+      file:
+        state: touch
+        path: /home/streadwell/hire_me.txt
+        owner: streadwell
+        group: streadwell
+        mode: '0644'
+
+
+    - name: Add line in newly created file
+      lineinfile:
+        path: /home/streadwell/hire_me.txt
+        line: Hire me! I am the person for the job
+
+
+
+...
